@@ -1,0 +1,27 @@
+
+
+Practical 2
+*Two-Way Data Binding + ngFor Directive
+Aim:
+To demonstrate two-way data binding and *ngFor directive in Angular.
+Steps:
+Step 1: Import FormsModule in app.module.ts
+import { FormsModule } from &#39;@angular/forms&#39;;
+@NgModule({
+imports: [BrowserModule, FormsModule]
+})
+Step 2: Write Code in app.component.ts
+export class AppComponent {
+subject = &#39;&#39;;
+subjects = [&#39;Maths&#39;, &#39;Science&#39;, &#39;Computer&#39;];
+}
+Step 3: Write Code in app.component.html
+&lt;input type=&quot;text&quot; [(ngModel)]=&quot;subject&quot;&gt;
+&lt;p&gt;Entered Subject: {{ subject }}&lt;/p&gt;
+&lt;ul&gt;
+&lt;li *ngFor=&quot;let s of subjects&quot;&gt;{{ s }}&lt;/li&gt;
+&lt;/ul&gt;
+Output:
+Entered subject is displayed dynamically and list of subjects is shown.
+Result:
+Thus, two-way data binding and *ngFor directive are implemented successfully.

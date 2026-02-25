@@ -1,0 +1,87 @@
+PRAC  4A1. Create a Database
+MongoDB creates a database automatically when a collection is created.
+use myDatabase;
+
+2. Create a Collection
+db.createCollection(&quot;users&quot;);
+
+3. Insert Documents
+➤ Insert one document
+db.users.insertOne({
+name: &quot;Alice&quot;,
+age: 25,
+city: &quot;New York&quot;
+});
+➤ Insert many documents
+db.users.insertMany([
+{ name: &quot;Bob&quot;, age: 30, city: &quot;London&quot; },
+{ name: &quot;Charlie&quot;, age: 28, city: &quot;Berlin&quot; }
+]);                                                                                                                          5. Update Documents
+
+➤ Update one
+db.users.updateOne(
+{ name: &quot;Alice&quot; }, // filter
+{ $set: { age: 26 } } // update
+);
+➤ Update many
+db.users.updateMany(
+{ city: &quot;London&quot; },
+{ $set: { country: &quot;UK&quot; } }
+);
+
+6. Delete Documents
+➤ Delete one
+db.users.deleteOne({ name: &quot;Charlie&quot; });
+➤ Delete many
+db.users.deleteMany({ city: &quot;London&quot; });                              
+
+
+4B   1. Create a Collection With Validation
+You can define rules using $jsonSchema.
+Example
+db.createCollection(&quot;users&quot;, {
+validator: {
+$jsonSchema: {
+bsonType: &quot;object&quot;,
+required: [&quot;name&quot;, &quot;email&quot;, &quot;age&quot;],
+properties: {
+name: {
+bsonType: &quot;string&quot;,
+description: &quot;Name must be a string&quot;
+},
+email: {
+bsonType: &quot;string&quot;,
+pattern: &quot;^.+@.+$&quot;,
+description: &quot;Must be a valid email&quot;
+},
+age: {
+bsonType: &quot;int&quot;,
+minimum: 18,
+description: &quot;Age must be an integer &gt;= 18&quot;
+}
+}
+}
+}
+});
+✔ What this does
+ Ensures name, email, age must exist
+ email must match a regex
+ age must be an integer and ≥ 18
+
+2. Insert Valid Data
+db.users.insertOne({
+name: &quot;Alice&quot;,
+email: &quot;alice@example.com&quot;,
+age: 25
+});
+✔ This will succeed.
+
+3. Insert Invalid Data
+db.users.insertOne({
+name: &quot;Bob&quot;,
+email: &quot;bob@gmail.com &quot;,
+age: 16
+});
+❌ This will fail due to the invalid email format.
+You’ll receive an error like:
+Document failed validation
