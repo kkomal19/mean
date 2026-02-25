@@ -1,0 +1,73 @@
+prac 3                                                                                                                                                                                                                                                       Using Visual Studio Code, create a Node.js application that:
+1. Initializes a new Node.js project and creates a package.json.
+2. Uses npm inside VS Code terminal.
+3. Creates and uses a custom module (module exports).
+4. Builds a basic Node.js HTTP server.
+5. Handles routes:
+o / → “Welcome to Node.js Server”
+o /about → message from custom module
+o /async → asynchronous response using setTimeout()
+6. Demonstrates the Node.js event loop via asynchronous code.
+7. Runs the server on port 3000 inside VS Code.
+✅ Step-by-Step Solution (In VS Code)
+Step 1: Create a Project Folder &amp; Open in VS Code
+1. Create a folder:
+node-fundamentals-demo
+2. Open VS Code → Click File → Open Folder → select the folder.
+Step 2: Open the Integrated Terminal
+In VS Code:
+Terminal → New Terminal
+Step 3: Initialize Node.js project
+In the terminal:
+npm init -y
+VS Code will now show a new file: package.json
+Step 4: Create a Custom Module
+In VS Code Explorer (left panel):
+1. Right-click → New File
+2. Name it: aboutModule.js
+Paste:
+// aboutModule.js
+function getAboutInfo() {
+return &quot;This is information from a custom Node.js module!&quot;;
+}
+module.exports = getAboutInfo;
+Step 5: Create the HTTP Server
+Create another file named server.js:
+const http = require(&#39;http&#39;);
+const getAboutInfo = require(&#39;./aboutModule&#39;);
+// Create server
+const server = http.createServer((req, res) =&gt; {
+
+res.writeHead(200, { &quot;Content-Type&quot;: &quot;text/plain&quot; });
+if (req.url === &quot;/&quot;) {
+res.end(&quot;Welcome to Node.js Server&quot;);
+} else if (req.url === &quot;/about&quot;) {
+const info = getAboutInfo();
+res.end(info);
+} else if (req.url === &quot;/async&quot;) {
+// Demonstrating asynchronous programming (Event Loop)
+setTimeout(() =&gt; {
+res.end(&quot;This async response was delayed using setTimeout!&quot;);
+}, 2000);
+} else {
+res.statusCode = 404;
+res.end(&quot;404 Not Found&quot;);
+}
+});
+// Start server
+server.listen(3000, () =&gt; {
+console.log(&quot;Server running at http://localhost:3000&quot;);
+});
+Step 6: Run the Server in VS Code
+In the VS Code terminal:
+node server.js
+You will see:
+Server running at http://localhost:3000
+Step 7: Test in Browser
+Open the following:
+✔ Root route
+http://localhost/3000/
+✔ About route (custom module)
+http://localhost:3000/about
+✔ Async route (event loop demonstration)
+http://localhost:3000/async
